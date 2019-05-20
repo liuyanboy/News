@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.news.dao.NewsMapper">
+
+    <select id="queryCategoryList" resultType="News_category">
+        select * from `news_category`
+    </select>
+
+    <select id="queryDetailList" resultType="News_detail">
+        select * from `news_detail`
+        <where>
+            <if test="categoryId != null and categoryId != 0">
+                and categoryId = #{categoryId}
+            </if>
+            <if test="title != null and title != ''">
+                and title like concat('%',#{title},'%')
+            </if>
+        </where>
+        order by id
+    </select>
+
+    <select id="getByIdDateil" resultType="News_detail">
+        select * from `news_detail`
+        <where>
+            <if test="id != null and id != 0">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateDetail" parameterType="News_detail">
+        UPDATE
+          `news`.`news_detail`
+        SET
+            `categoryId` = #{categoryId},
+            `title` = #{title},
+            `summary` = #{summary},
+            `author` = #{author},
+            `updateDate` = #{updateDate}
+             where  `id` = #{id};
+    </update>
+</mapper>
